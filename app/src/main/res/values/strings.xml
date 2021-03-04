@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">4Chat</string>
+    <string name="create_a_new_account">Create a new account</string>
+    <string name="welcome_to_4chat">Welcome to 4Chat</string>
+</resources>
