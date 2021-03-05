@@ -29,7 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
         mDisplayName = findViewById(R.id.reg_display_name);
         mEmail = findViewById(R.id.reg_email);
         mPassword = findViewById(R.id.reg_password);
-        mCreateBtn = findViewById(R.id.start_reg_btn);
+        mCreateBtn = findViewById(R.id.reg_create_account_btn); // Here was my error! I matched the wrong button to this view, but it's fixed now!
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -47,15 +47,19 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void register_user(String display_name, String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                    Intent mainIntent = new Intent(RegisterActivity.this,
+                            MainActivity.class);
                     startActivity(mainIntent);
                     finish();
                 } else {
-                    Toast.makeText(RegisterActivity.this, "You got an error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "You can't create an " +
+                            "account with the provided username, email and password. Please try " +
+                            "again!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
