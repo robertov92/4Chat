@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // firebase authentication instance
         mAuth = FirebaseAuth.getInstance();
 
         // Toolbar
@@ -30,9 +31,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Overrides onStart
+     */
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+
+        // Check if user is signed in (non-null) and update UI accordingly
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null){
             Intent startIntent = new Intent(MainActivity.this, StartActivity.class);

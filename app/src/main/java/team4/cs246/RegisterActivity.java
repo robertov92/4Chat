@@ -53,22 +53,33 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = mEmail.getText().toString();
                 String password = mPassword.getText().toString();
 
-                register_user(display_name, email, password);
+                // Calling function to register a new user
+                registerUser(display_name, email, password);
             }
         });
 
     }
 
-    private void register_user(String display_name, String email, String password) {
+    /**
+     * User registration functionality
+     * @param display_name name taken from EditText
+     * @param email email taken from EditText
+     * @param password password taken from EditText
+     */
+    private void registerUser(String display_name, String email, String password) {
+        // Method from the authentication object. Creates username and password
+        // Adding on complete listener
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                // If successful, send user to the main activity
                 if (task.isSuccessful()){
                     Intent mainIntent = new Intent(RegisterActivity.this,
                             MainActivity.class);
                     startActivity(mainIntent);
                     finish();
+                    // show toast!
                 } else {
                     Toast.makeText(RegisterActivity.this, "You can't create an " +
                             "account with the provided username, email and password. Please try " +
