@@ -2,6 +2,7 @@ package team4.cs246;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,17 +22,29 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
+    private Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        // authentication instance
+        mAuth = FirebaseAuth.getInstance();
+
+        // toolbar
+        mToolbar = (Toolbar)findViewById(R.id.register_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Create Account");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // getting inputs
         mDisplayName = findViewById(R.id.reg_display_name);
         mEmail = findViewById(R.id.reg_email);
         mPassword = findViewById(R.id.reg_password);
         mCreateBtn = findViewById(R.id.reg_create_account_btn); // Here was my error! I matched the wrong button to this view, but it's fixed now!
 
-        mAuth = FirebaseAuth.getInstance();
+
 
         mCreateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
