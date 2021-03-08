@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,13 +37,15 @@ public class RegisterActivity extends AppCompatActivity {
         mToolbar = (Toolbar)findViewById(R.id.register_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Create Account");
+
+        // back button on toolbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // getting inputs
         mDisplayName = findViewById(R.id.reg_display_name);
         mEmail = findViewById(R.id.reg_email);
         mPassword = findViewById(R.id.reg_password);
-        mCreateBtn = findViewById(R.id.reg_create_account_btn); // Here was my error! I matched the wrong button to this view, but it's fixed now!
+        mCreateBtn = findViewById(R.id.reg_create_account_btn);
 
 
 
@@ -53,8 +56,16 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = mEmail.getText().toString();
                 String password = mPassword.getText().toString();
 
-                // Calling function to register a new user
-                registerUser(display_name, email, password);
+                // if inputs aren't empty
+                if(!TextUtils.isEmpty(display_name) || !TextUtils.isEmpty(email) || !TextUtils.isEmpty(password)){
+                    // Calling function to register a new user
+                    registerUser(display_name, email, password);
+
+                    // else, show toast
+                } else {
+                    Toast.makeText(RegisterActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -67,8 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
      * @param password password taken from EditText
      */
     private void registerUser(String display_name, String email, String password) {
-        // Method from the authentication object. Creates username and password
-        // Adding on complete listener
+        // This method from authentication instance does the magic!!!
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -79,11 +89,12 @@ public class RegisterActivity extends AppCompatActivity {
                             MainActivity.class);
                     startActivity(mainIntent);
                     finish();
-                    // show toast!
+
+                    // else, show error toast!
                 } else {
                     Toast.makeText(RegisterActivity.this, "You can't create an " +
                             "account with the provided username, email and password. Please try " +
-                            "again!", Toast.LENGTH_SHORT).show();
+                            "again using different inputs!", Toast.LENGTH_LONG).show();
                 }
             }
         });
