@@ -49,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         /**
-        * Register button functionallity. This is called when the Register button is pressed
+        * Register button functionality. This is called when the Register button is pressed
         */
         mCreateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,8 +87,11 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 // If successful, send user to the main activity
                 if (task.isSuccessful()){
-                    Intent mainIntent = new Intent(RegisterActivity.this,
-                            MainActivity.class);
+                    Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+
+                    // because of this line the user can't go back to this activity from MainActivity using the back button
+                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
                     startActivity(mainIntent);
                     finish();
 
