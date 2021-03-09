@@ -48,7 +48,9 @@ public class RegisterActivity extends AppCompatActivity {
         mCreateBtn = findViewById(R.id.reg_create_account_btn);
 
 
-
+        /**
+        * Register button functionallity. This is called when the Register button is pressed
+        */
         mCreateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 // if inputs aren't empty
                 if(!TextUtils.isEmpty(display_name) || !TextUtils.isEmpty(email) || !TextUtils.isEmpty(password)){
-                    // Calling function to register a new user
+                    // Calls function to register a new user
                     registerUser(display_name, email, password);
 
                     // else, show toast
