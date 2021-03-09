@@ -83,10 +83,10 @@ public class LoginActivity extends AppCompatActivity {
                     // Use intent to send user to main
                     Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
 
-                    // This is so the user can't go back
+                    // This is so the user can't go back to this activity from MainActivity
                     mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                    // send the user
+                    // send the user to MainActivity
                     startActivity(mainIntent);
                     finish();
 
