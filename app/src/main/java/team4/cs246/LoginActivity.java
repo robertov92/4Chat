@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+
+
 public class LoginActivity extends AppCompatActivity {
     private EditText mEmail;
     private EditText mPassword;
@@ -90,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(mainIntent);
                     finish();
 
-                    //else, show error toast
+                    //else, show error TOAST
                 } else {
                     Toast.makeText(LoginActivity.this, "Please check email and password", Toast.LENGTH_SHORT).show();
                 }
