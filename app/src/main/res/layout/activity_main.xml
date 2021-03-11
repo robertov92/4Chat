@@ -25,13 +25,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextColor="@color/white"/>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/main_tabs"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/lighter_blue" />
+            android:background="@color/main_blue"
+            app:tabIndicatorColor="@color/white"
+            app:tabTextColor="@color/white"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
