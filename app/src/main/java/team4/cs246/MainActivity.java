@@ -13,6 +13,11 @@ import android.view.MenuItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -22,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private TabLayout mTabLayout;
+    private DatabaseReference mDatabaseRef;
+
+    private String mCurrentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +38,22 @@ public class MainActivity extends AppCompatActivity {
 
         // firebase authentication instance
         mAuth = FirebaseAuth.getInstance();
+        mCurrentUserId = mAuth.getCurrentUser().getUid(); // current user id as a string
 
         // Toolbar
-        mToolbar = findViewById(R.id.main_toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Username");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        mDatabaseRef.child("Users").child(mCurrentUserId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String nameAsString = snapshot.child("name").getValue().toString();
+                mToolbar = findViewById(R.id.main_toolbar);
+                setSupportActionBar(mToolbar);
+                getSupportActionBar().setTitle("Welcome " + nameAsString + "!");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
 
         // Tabs (Requests, Chats, Friends)
         mViewPager = findViewById(R.id.main_tab_pager);
@@ -42,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mTabLayout = findViewById(R.id.main_tabs);
         mTabLayout.setupWithViewPager(mViewPager);
+
     }
 
     /**

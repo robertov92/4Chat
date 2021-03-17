@@ -16,12 +16,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText mDisplayName, mEmail, mPassword;
     private Button mCreateBtn;
 
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
 
     private Toolbar mToolbar;
 
@@ -87,13 +93,27 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 // If successful, send user to the main activity
                 if (task.isSuccessful()){
-                    Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
 
-                    // because of this line the user can't go back to this activity from MainActivity using the back button
-                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    // Saving user to realtime database
+                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String userId = currentUser.getUid();
+                    mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+                    HashMap<String, String> newUserMap = new HashMap<>();
+                    newUserMap.put("name", display_name);
+                    mDatabase.setValue(newUserMap).addOnCompleteListener(new OnCompleteListener<Void>() {
 
-                    startActivity(mainIntent);
-                    finish();
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // sends user to main activity
+                            Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+
+                            // because of this line the user can't go back to this activity from MainActivity using the back button
+                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                            startActivity(mainIntent);
+                            finish();
+                        }
+                    });
 
                     // else, show error toast!
                 } else {
