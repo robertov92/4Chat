@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -33,6 +34,8 @@ public class ChatActivity extends AppCompatActivity {
 
     private Button mSendMessageBtn;
     private EditText mMessageText;
+
+    private RecyclerView mMessagesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +104,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        mMessagesList = findViewById(R.id.messages_list);
 
     }
 
