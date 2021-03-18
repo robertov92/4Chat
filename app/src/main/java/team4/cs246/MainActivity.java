@@ -36,39 +36,38 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-        // firebase authentication instance
-        mAuth = FirebaseAuth.getInstance();
-        mCurrentUserId = mAuth.getCurrentUser().getUid(); // current user id as a string
-
         if (mCurrentUserId == null){
             Intent startIntent = new Intent(MainActivity.this, StartActivity.class);
             startActivity(startIntent);
             finish();
+        }else{
+            // firebase authentication instance
+            mAuth = FirebaseAuth.getInstance();
+            mCurrentUserId = mAuth.getCurrentUser().getUid(); // current user id as a string
+
+            // Toolbar
+            mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+            mDatabaseRef.child("Users").child(mCurrentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String nameAsString = snapshot.child("name").getValue().toString();
+                    mToolbar = findViewById(R.id.main_toolbar);
+                    setSupportActionBar(mToolbar);
+                    getSupportActionBar().setTitle("Welcome " + nameAsString + "!");
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+
+            // Tabs (Requests, Chats, Friends)
+            mViewPager = findViewById(R.id.main_tab_pager);
+            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), 3);
+            mViewPager.setAdapter(mSectionsPagerAdapter);
+            mTabLayout = findViewById(R.id.main_tabs);
+            mTabLayout.setupWithViewPager(mViewPager);
         }
 
-        // Toolbar
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mDatabaseRef.child("Users").child(mCurrentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String nameAsString = snapshot.child("name").getValue().toString();
-                mToolbar = findViewById(R.id.main_toolbar);
-                setSupportActionBar(mToolbar);
-                getSupportActionBar().setTitle("Welcome " + nameAsString + "!");
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-
-        // Tabs (Requests, Chats, Friends)
-        mViewPager = findViewById(R.id.main_tab_pager);
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), 3);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mTabLayout = findViewById(R.id.main_tabs);
-        mTabLayout.setupWithViewPager(mViewPager);
 
     }
 
