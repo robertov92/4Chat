@@ -1,8 +1,21 @@
 package team4.cs246;
 
 public class Messages {
-    String message;
-    long time;
+    private String message;
+    private long time;
+    private String from;
+
+    public Messages(String from) {
+        this.from = from;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
 
     public Messages(String message, long time) {
         this.message = message;

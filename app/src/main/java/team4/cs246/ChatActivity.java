@@ -91,8 +91,8 @@ public class ChatActivity extends AppCompatActivity {
                     mDatabaseRef.updateChildren(chatUserMap, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                            if (error == null){
-                                Toast.makeText(ChatActivity.this, "Done!", Toast.LENGTH_SHORT).show();
+                            if (error != null){
+                                Toast.makeText(ChatActivity.this, "Something is wrong!", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -130,6 +130,8 @@ public class ChatActivity extends AppCompatActivity {
                 Messages message = snapshot.getValue(Messages.class);
                 messagesList.add(message);
                 mAdapter.notifyDataSetChanged();
+
+                mMessagesList.scrollToPosition(messagesList.size() -1); // shows the last message
             }
 
             @Override
@@ -168,16 +170,19 @@ public class ChatActivity extends AppCompatActivity {
             Map<String, Object> messageMap = new HashMap<>();
             messageMap.put("message", message);
             messageMap.put("time", ServerValue.TIMESTAMP);
+            messageMap.put("from", mCurrentUserId); // adds who is sending the message to change color of background
 
             Map<String, Object> messageUserMap = new HashMap<>();
             messageUserMap.put(current_user_ref + "/" + pushId, messageMap);
             messageUserMap.put(other_user_ref + "/" + pushId, messageMap);
 
+            mMessageText.setText(""); // sets the EditText blank
+
             mDatabaseRef.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                    if (error == null){
-                        Toast.makeText(ChatActivity.this, "Done!", Toast.LENGTH_SHORT).show();
+                    if (error != null){
+                        Toast.makeText(ChatActivity.this, "Something is wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
