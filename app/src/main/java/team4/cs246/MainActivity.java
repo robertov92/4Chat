@@ -36,13 +36,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (mCurrentUserId == null){
+        // firebase authentication instance
+        mAuth = FirebaseAuth.getInstance();
+
+        if (mAuth == null){
             Intent startIntent = new Intent(MainActivity.this, StartActivity.class);
             startActivity(startIntent);
             finish();
         }else{
-            // firebase authentication instance
-            mAuth = FirebaseAuth.getInstance();
             mCurrentUserId = mAuth.getCurrentUser().getUid(); // current user id as a string
 
             // Toolbar
