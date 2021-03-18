@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Toolbar
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mDatabaseRef.child("Users").child(mCurrentUserId).addValueEventListener(new ValueEventListener() {
+        mDatabaseRef.child("Users").child(mCurrentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String nameAsString = snapshot.child("name").getValue().toString();
@@ -113,6 +113,10 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.main_logout_btn){
             FirebaseAuth.getInstance().signOut();
             sendToStart();
+        }
+        if(item.getItemId() == R.id.main_users_btn){
+            Intent usersIntent = new Intent(MainActivity.this, UsersActivity.class);
+            startActivity(usersIntent);
         }
         return true;
     }
