@@ -27,46 +27,31 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private TabLayout mTabLayout;
-    private DatabaseReference mDatabaseRef;
 
-    private String mCurrentUserId;
+    private DatabaseReference mUserRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // firebase authentication instance
         mAuth = FirebaseAuth.getInstance();
 
-        if (mAuth == null){
-            sendToStart();
-        }else{
-            mCurrentUserId = mAuth.getCurrentUser().getUid(); // current user id as a string
+        mToolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Welcome back!");
 
-            // Toolbar
-            mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-            mDatabaseRef.child("Users").child(mCurrentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String nameAsString = snapshot.child("name").getValue().toString();
-                    mToolbar = findViewById(R.id.main_toolbar);
-                    setSupportActionBar(mToolbar);
-                    getSupportActionBar().setTitle("Welcome " + nameAsString + "!");
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
-
-            // Tabs (Requests, Chats, Friends)
-            mViewPager = findViewById(R.id.main_tab_pager);
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), 3);
-            mViewPager.setAdapter(mSectionsPagerAdapter);
-            mTabLayout = findViewById(R.id.main_tabs);
-            mTabLayout.setupWithViewPager(mViewPager);
+        if(mAuth.getCurrentUser() != null){
+            mUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
         }
 
+        // Tabs (Requests, Chats, Friends)
+        mViewPager = findViewById(R.id.main_tab_pager);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), 3);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mTabLayout = findViewById(R.id.main_tabs);
+        mTabLayout.setupWithViewPager(mViewPager);
 
     }
 
@@ -75,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void onStart() {
         super.onStart();
+
 
         // Check if user is signed in (non-null) and update UI accordingly
         FirebaseUser currentUser = mAuth.getCurrentUser();
