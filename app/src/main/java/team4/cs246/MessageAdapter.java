@@ -25,6 +25,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_single_layout, parent, false);
         return new MessageViewHolder(v);
     }
@@ -38,6 +39,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         Messages c = mMessageList.get(position);
 
         String from_user = c.getFrom();
+        // is it image, text, or video?
+        //String message_type = c.getType();
+
 
         // if the current user is the one who sent the message...
         if (from_user.equals(current_user_id)){
@@ -46,6 +50,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         }
 
         holder.messageText.setText(c.getMessage());
+
+        // add when ready for message send
+        /*if (message_type.equals("text")) {
+            viewHolder.messageText.setText(c.getMessage());
+            viewHolder.messageImage.setVisibility(View.INVISIBLE);
+        }
+        else {
+            viewHolder.messageText.setVisibility(View.INVISIBLE);
+
+            // hide message text
+            Picasso.with(viewHolder.profileImage.getContext()).load(c.getMessage())
+                    .placeholder(R.drawable.default_avatar.into(viewHolder.messageImate));
+
+        }*/
     }
 
     @Override
@@ -56,10 +74,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public class MessageViewHolder extends RecyclerView.ViewHolder{
         public TextView messageText;
-
+        //public ImageView messageImage;
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
             messageText = itemView.findViewById(R.id.message_text_layout);
+            //messageImage = (ImageView) view.findViewById(R.id.message_image_layout);
         }
     }
 
