@@ -10,12 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.Date;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
     private FirebaseAuth mAuth;
     private List<Messages> mMessageList;
+    private DatabaseReference mDatabase;
 
 
     public MessageAdapter(List<Messages> mMessageList) {
@@ -33,18 +40,24 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
 
         mAuth = FirebaseAuth.getInstance();
-        String current_user_id = mAuth.getCurrentUser().getUid();
 
         Messages c = mMessageList.get(position);
 
-        String from_user = c.getFrom();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("Users").child(c.getFrom()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String name = snapshot.child("name").getValue().toString();
+                holder.mSentByName.setText(name);
+            }
 
-        // if the current user is the one who sent the message...
-        if (from_user.equals(current_user_id)){
-            holder.messageText.setBackgroundColor(Color.rgb(227,227,227));
-            holder.messageText.setTextColor(Color.BLACK);
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+        Date d = new Date(c.getTime());
+        holder.mSentTime.setText(d.toString());
         holder.messageText.setText(c.getMessage());
     }
 
@@ -56,10 +69,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public class MessageViewHolder extends RecyclerView.ViewHolder{
         public TextView messageText;
+        public TextView mSentByName;
+        public TextView mSentTime;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
             messageText = itemView.findViewById(R.id.message_text_layout);
+            mSentByName = itemView.findViewById(R.id.messages_text_name);
+            mSentTime = itemView.findViewById(R.id.messages_timestamp);
         }
     }
 
