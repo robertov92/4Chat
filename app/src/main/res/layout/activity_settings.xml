@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_blue"
+    android:background="@color/lighter_blue"
     tools:context=".SettingsActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -17,13 +17,13 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/white_two"/>
+        app:titleTextColor="@color/white_two" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/settings_image"
         android:layout_width="184dp"
         android:layout_height="214dp"
-        android:background="@color/main_blue"
+        android:background="@color/lighter_blue"
         android:src="@drawable/default_profile"
         android:translationX="115dp"
         android:translationY="88dp" />
@@ -43,8 +43,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/change_status"
-        android:translationX="125dp"
-        android:translationY="555dp" />
+        android:translationX="128dp"
+        android:translationY="560dp"
+    />
 
     <TextView
         android:id="@+id/settings_display_name"
@@ -53,14 +54,17 @@
         android:text="@string/display_name"
         android:translationX="160dp"
         android:translationY="300dp"
-        tools:text="@string/display_name" />
+        tools:text="@string/display_name"
+        android:textColor="@android:color/black"/>
 
     <TextView
         android:id="@+id/settings_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/default_message"
-        android:translationX="140dp"
-        android:translationY="330dp" />
+        android:translationX="120dp"
+        android:translationY="330dp"
+        android:textColor="@android:color/black"
+        />
 
 </RelativeLayout>
