@@ -4,14 +4,15 @@ public class Users {
 
     //These have to correspond to the names in my database, just like JSON
     public String name;
-
-
-    public Users(String name) {
-        this.name = name;
-
-    }
+    public String status;
 
     public Users() {
+    }
+
+    public Users(String name, String status) {
+        this.name = name;
+        this.status = status;
+
     }
 
     public String getName() {
@@ -20,6 +21,14 @@ public class Users {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }

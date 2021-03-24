@@ -3,8 +3,8 @@ package team4.cs246;
 public class Conversation {
     public boolean seen;
     public long timestamp;
-    public Conversation(){}
 
+    public Conversation(){}
     public boolean isSeen() {
         return seen;
     }

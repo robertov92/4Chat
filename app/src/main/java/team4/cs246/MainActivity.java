@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -28,23 +29,19 @@ public class MainActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private TabLayout mTabLayout;
 
-    private DatabaseReference mUserRef;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // firebase authentication instance
         mAuth = FirebaseAuth.getInstance();
 
+        // Toolbar
         mToolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Welcome back!");
-
-        if(mAuth.getCurrentUser() != null){
-            mUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
-        }
+        getSupportActionBar().setTitle("Welcome!");
 
         // Tabs (Requests, Chats, Friends)
         mViewPager = findViewById(R.id.main_tab_pager);
