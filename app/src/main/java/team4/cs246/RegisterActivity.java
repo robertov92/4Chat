@@ -29,6 +29,8 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
+    private DatabaseReference mDatabase;
+
     private Toolbar mToolbar;
 
     @Override
@@ -94,24 +96,33 @@ public class RegisterActivity extends AppCompatActivity {
                 // If successful, send user to the main activity
                 if (task.isSuccessful()){
 
-                    // Saving user to realtime database
-                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                    String userId = currentUser.getUid();
-                    mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
-                    HashMap<String, String> newUserMap = new HashMap<>();
-                    newUserMap.put("name", display_name);
-                    mDatabase.setValue(newUserMap).addOnCompleteListener(new OnCompleteListener<Void>() {
 
+                    // Saving user to realtime database                 
+                    FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
+                    String uid = current_user.getUid();
+
+                    mDatabase= FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+                    HashMap<String,String> userMap = new HashMap<>();
+                    userMap.put("name",display_name);
+                    userMap.put("status","Hi there! Im using 4Chat!");
+                    userMap.put("image","default");
+                    userMap.put("thumb_image","default");
+
+                    mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            // sends user to main activity
-                            Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                            if(task.isSuccessful()){
+                                Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
 
-                            // because of this line the user can't go back to this activity from MainActivity using the back button
-                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                // because of this line the user can't go back to this activity from MainActivity using the back button
+                                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                            startActivity(mainIntent);
-                            finish();
+                                startActivity(mainIntent);
+                                finish();
+
+
+                            }
+
                         }
                     });
 
