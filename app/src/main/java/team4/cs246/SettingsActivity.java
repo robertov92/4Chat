@@ -106,13 +106,14 @@ public class SettingsActivity extends AppCompatActivity {
                 mStatus.setText(status);
 
 
-                Picasso.get().load(image).into(mDisplayImage);
 
                 // show default image if there is not user image
-                if(!image.equals("default")){
+                if(image != "default"){
 
                     Picasso.get().load(image).into(mDisplayImage);
                 }
+
+
 
 
 
@@ -175,10 +176,8 @@ public class SettingsActivity extends AppCompatActivity {
                     Uri imageUri = data.getData();
 
 
-
                     CropImage.activity(imageUri)
                             .setAspectRatio(1,1).setMinCropWindowSize(300, 300).start(SettingsActivity.this);
-
 
 
                 }
