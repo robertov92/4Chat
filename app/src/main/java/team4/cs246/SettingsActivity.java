@@ -100,6 +100,8 @@ public class SettingsActivity extends AppCompatActivity {
                 mStatus.setText(status);
 
 
+                Picasso.get().load(image).into(mDisplayImage);
+
                 // show default image if there is not user image
                 if(!image.equals("default")){
 
