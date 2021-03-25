@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -39,11 +40,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Picasso;
 
 
 public class ChatActivity extends AppCompatActivity {
-    private String mOtherUserId;
+    private String mOtherUserId; // other user
     private Toolbar mToolbar;
     private DatabaseReference mDatabaseRef; // to retrieve the other user id
     private FirebaseAuth mAuth; // to retrieve my user id
@@ -179,43 +180,49 @@ public class ChatActivity extends AppCompatActivity {
             final String current_user_ref = "messages/" + mCurrentUserId + "/" + mOtherUserId;
             final String chat_user_ref = "messages/" + mOtherUserId + "/" + mCurrentUserId;
 
-            DatabaseReference user_message_push = mRootRef.child("messages")
+            DatabaseReference user_message_push = mDatabaseRef.child("messages")
                     .child(mCurrentUserId).child(mOtherUserId).push();
 
             final String push_id = user_message_push.getKey();
 
             StorageReference filepath = mImageStorage.child("message_images").child( push_id + ".jpg");
 
-            filepath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            // Resource used:
+            // https://stackoverflow.com/questions/54009384/task-getresult-getdownloadurl-method-not-working
+            // as reference. First answer.
+            final UploadTask uploadTask = filepath.putFile(imageUri);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String download_url = uri.toString();
 
-                    if (task.isSuccessful()) {
-                        String download_url = task.getResult().getDownloadUrl().toString();
+                            Map<String, Object> messageMap = new HashMap<>();
+                            messageMap.put( "message", download_url);
+                            //messageMap.put( "seen", false);
+                            messageMap.put( "type", "image");
+                            messageMap.put( "time", ServerValue.TIMESTAMP);
+                            messageMap.put( "from", mCurrentUserId);
 
-                        Map<String, Object> messageMap = new HashMap<>();
-                        messageMap.put( "message", download_url);
-                        messageMap.put( "seen", false);
-                        messageMap.put( "type", "image");
-                        messageMap.put( "time", ServerValue.TIMESTAMP);
-                        messageMap.put( "from", mCurrentUserId);
+                            Map messageUserMap = new HashMap();
+                            messageUserMap.put(current_user_ref + "/" + push_id, messageMap);
+                            messageUserMap.put(chat_user_ref + "/" + push_id, messageMap);
 
-                        Map messageUserMap = new HashMap();
-                        messageUserMap.put(current_user_ref + "/" + push_id, messageMap);
-                        messageUserMap.put(chat_user_ref + "/" + push_id, messageMap);
+                            mMessageText.setText("");
 
-                        mMessageText.setText("");
-
-                        mRootRef.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
-                            @Override
-                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                if(databaseError != null){
-                                    Log.d("CHAT_LOG", databaseError.getMessage().toString());
+                            mDatabaseRef.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                    if (error != null){
+                                        Toast.makeText(ChatActivity.this, "Something is wrong!", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
-
-                    }
+                            });
+                        }
+                    });
                 }
             });
         }
