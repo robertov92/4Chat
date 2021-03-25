@@ -86,6 +86,7 @@ public class SettingsActivity extends AppCompatActivity {
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         String current_uid = mCurrentUser.getUid();
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(current_uid);
+        mUserDatabase.keepSynced(true); // Offline capabilities
 
         mUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -98,7 +99,13 @@ public class SettingsActivity extends AppCompatActivity {
                 mName.setText(name);
                 mStatus.setText(status);
 
-                Picasso.get().load(image).into(mDisplayImage);
+                //Picasso.get().load(image).into(mDisplayImage);
+
+                // show default image if there is not user image
+                if(!image.equals("default")){
+
+                    Picasso.get().load(image).into(mDisplayImage);
+                }
 
 
 
@@ -127,15 +134,13 @@ public class SettingsActivity extends AppCompatActivity {
 
         mImageBtn.setOnClickListener(new View.OnClickListener() {
 
-
+            @Override
             public void onClick(View v) {
 
 
                 Intent galleryIntent = new Intent();
                 galleryIntent.setType("image/*");
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-
-
                 startActivityForResult(Intent.createChooser(galleryIntent,"SELECT IMAGE"),GALLERY_PICK);
 
                 /*
@@ -148,8 +153,10 @@ public class SettingsActivity extends AppCompatActivity {
 
 
             }
+        });
+    }
 
-
+            @Override
             protected void onActivityResult(int requestCode,int resultCode,Intent data){
                 SettingsActivity.super.onActivityResult(requestCode,resultCode,data);
 
@@ -160,7 +167,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
                     CropImage.activity(imageUri)
-                            .setAspectRatio(1,1).start(SettingsActivity.this);
+                            .setAspectRatio(1,1).setMinCropWindowSize(300, 300).start(SettingsActivity.this);
 
 
                     //Toast.makeText(SettingsActivity.this,imageUrl,Toast.LENGTH_LONG).show();
@@ -182,14 +189,15 @@ public class SettingsActivity extends AppCompatActivity {
 
                         String current_user_id = mCurrentUser.getUid();
 
-                        StorageReference filepath = mImageStorage.child("profile_images").child(current_user_id+".jpg");
+                        StorageReference filepath = mImageStorage.child("profile_images").child(current_user_id + ".jpg");
 
                         filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
                                 if(task.isSuccessful()){
-                                    String download_url = task.getResult().getStorage().getDownloadUrl().toString();
+                                    //String download_url = task.getResult().getStorage().getDownloadUrl().toString();
+                                    String download_url = resultUri.toString();
 
                                     mUserDatabase.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
@@ -226,26 +234,8 @@ public class SettingsActivity extends AppCompatActivity {
 
             }
 
-            public String random() {
-                Random generator = new Random();
-                StringBuilder randomStringBuilder = new StringBuilder();
-                int randomLength = generator.nextInt(10);
-                char tempChar;
-                for (int i = 0; i < randomLength; i++){
-                    tempChar = (char) (generator.nextInt(96) + 32);
-                    randomStringBuilder.append(tempChar);
-                }
-                return randomStringBuilder.toString();
-            }
-
-
-        });
 
 
 
 
-
-
-
-    }
 }
