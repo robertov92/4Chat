@@ -32,6 +32,9 @@ public class StatusActivity extends AppCompatActivity {
     //Progress
     private ProgressDialog mProgress;
 
+    /*
+    Loads Edit Status Activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,9 @@ public class StatusActivity extends AppCompatActivity {
 
         mStatus.getEditText().setText(status_value);
 
+        /*
+        Functionality to Save button when clicked
+         */
         mSavebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

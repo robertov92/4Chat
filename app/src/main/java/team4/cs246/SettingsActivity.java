@@ -61,6 +61,9 @@ public class SettingsActivity extends AppCompatActivity {
     //Progress bar
     private ProgressDialog mProgressDialog;
 
+    /*
+    Main activity for Settings page
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +91,9 @@ public class SettingsActivity extends AppCompatActivity {
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(current_uid);
         mUserDatabase.keepSynced(true); // Offline capabilities
 
+        /*
+        Reads User's data from database
+         */
         mUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -118,6 +124,9 @@ public class SettingsActivity extends AppCompatActivity {
 
             }
         });
+        /*
+        Adds functionality to Status button
+         */
         mStatusBtn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
@@ -133,6 +142,9 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
 
+        /*
+        Adds functionality to Image button
+         */
         mImageBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -151,7 +163,9 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
     }
-
+            /*
+            Retrieves image that user picks and crops it
+             */
             @Override
             protected void onActivityResult(int requestCode,int resultCode,Intent data){
                 SettingsActivity.super.onActivityResult(requestCode,resultCode,data);
