@@ -27,6 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button mCreateBtn;
 
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
 
     private DatabaseReference mDatabase;
 
@@ -94,6 +95,9 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 // If successful, send user to the main activity
                 if (task.isSuccessful()){
+
+
+                    // Saving user to realtime database                 
                     FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
                     String uid = current_user.getUid();
 
@@ -118,6 +122,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                             }
+
                         }
                     });
 

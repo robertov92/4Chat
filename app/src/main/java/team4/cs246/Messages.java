@@ -13,13 +13,10 @@ public class Messages {
         return from;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public Messages(String message, long time) {
+    public Messages(String message, long time, String from) {
         this.message = message;
         this.time = time;
+        this.from = from;
     }
 
     public Messages() {

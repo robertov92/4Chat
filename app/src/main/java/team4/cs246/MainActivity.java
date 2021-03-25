@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -27,9 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private TabLayout mTabLayout;
-    private DatabaseReference mDatabaseRef;
 
-    private String mCurrentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,22 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
         // firebase authentication instance
         mAuth = FirebaseAuth.getInstance();
-        mCurrentUserId = mAuth.getCurrentUser().getUid(); // current user id as a string
 
         // Toolbar
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mDatabaseRef.child("Users").child(mCurrentUserId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String nameAsString = snapshot.child("name").getValue().toString();
-                mToolbar = findViewById(R.id.main_toolbar);
-                setSupportActionBar(mToolbar);
-                getSupportActionBar().setTitle("Welcome " + nameAsString + "!");
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
+        mToolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Welcome!");
 
         // Tabs (Requests, Chats, Friends)
         mViewPager = findViewById(R.id.main_tab_pager);
@@ -70,12 +58,11 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
+
         // Check if user is signed in (non-null) and update UI accordingly
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null){
-            Intent startIntent = new Intent(MainActivity.this, StartActivity.class);
-            startActivity(startIntent);
-            finish();
+            sendToStart();
         }
     }
 
@@ -115,16 +102,16 @@ public class MainActivity extends AppCompatActivity {
             sendToStart();
         }
 
-
+        if(item.getItemId() == R.id.main_users_btn){
+            Intent usersIntent = new Intent(MainActivity.this, UsersActivity.class);
+            startActivity(usersIntent);
+        
         if(item.getItemId()==R.id.main_settings_btn){
             Intent settingsIntent = new Intent(MainActivity.this,SettingsActivity.class);
             startActivity(settingsIntent);
             //startActivity(new Intent(MainActivity.this,SettingsActivity.class));
 
         }
-
-
-
 
         return true;
     }

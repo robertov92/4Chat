@@ -43,7 +43,10 @@ public class UsersActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(UsersViewHolder usersViewHolder, Users users, int i) {
                 usersViewHolder.setName(users.getName());
+                usersViewHolder.setStatus(users.getStatus());
                 String list_user_id = getRef(i).getKey(); // getting ref to click on it
+
+                // send user to chat activity when a user is clicked
                 mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -80,6 +83,10 @@ public class UsersActivity extends AppCompatActivity {
         public void setName(String name){
             TextView userNameView = mView.findViewById(R.id.user_single_name);
             userNameView.setText(name);
+        }
+        public void setStatus(String status){
+            TextView userStatusView = mView.findViewById(R.id.user_single_status);
+            userStatusView.setText(status);
         }
     }
 }
