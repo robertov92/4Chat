@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Check if user is signed in (non-null) and update UI accordingly
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null){
+        if (currentUser == null) {
             sendToStart();
         }
     }
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Creating main menu
+     *
      * @param menu a menu
      * @return bool
      */
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Main-menu options
+     *
      * @param item a menu
      * @return a bool
      */
@@ -97,22 +99,23 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
 
-        if (item.getItemId() == R.id.main_logout_btn){
+        if (item.getItemId() == R.id.main_logout_btn) {
             FirebaseAuth.getInstance().signOut();
             sendToStart();
         }
 
-        if(item.getItemId() == R.id.main_users_btn){
+        if (item.getItemId() == R.id.main_users_btn) {
             Intent usersIntent = new Intent(MainActivity.this, UsersActivity.class);
             startActivity(usersIntent);
-        
-        if(item.getItemId()==R.id.main_settings_btn){
-            Intent settingsIntent = new Intent(MainActivity.this,SettingsActivity.class);
+
+
+        }
+        if (item.getItemId() == R.id.main_settings_btn) {
+            Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(settingsIntent);
             //startActivity(new Intent(MainActivity.this,SettingsActivity.class));
 
         }
-
         return true;
     }
 }
