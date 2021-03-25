@@ -99,7 +99,6 @@ public class SettingsActivity extends AppCompatActivity {
                 mName.setText(name);
                 mStatus.setText(status);
 
-                //Picasso.get().load(image).into(mDisplayImage);
 
                 // show default image if there is not user image
                 if(!image.equals("default")){
@@ -143,12 +142,6 @@ public class SettingsActivity extends AppCompatActivity {
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(galleryIntent,"SELECT IMAGE"),GALLERY_PICK);
 
-                /*
-                CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .start(SettingsActivity.this);*/
-
-
 
 
 
@@ -169,8 +162,6 @@ public class SettingsActivity extends AppCompatActivity {
                     CropImage.activity(imageUri)
                             .setAspectRatio(1,1).setMinCropWindowSize(300, 300).start(SettingsActivity.this);
 
-
-                    //Toast.makeText(SettingsActivity.this,imageUrl,Toast.LENGTH_LONG).show();
 
 
                 }
@@ -196,7 +187,6 @@ public class SettingsActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
                                 if(task.isSuccessful()){
-                                    //String download_url = task.getResult().getStorage().getDownloadUrl().toString();
                                     String download_url = resultUri.toString();
 
                                     mUserDatabase.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -211,7 +201,7 @@ public class SettingsActivity extends AppCompatActivity {
                                     });
 
 
-                                    //Toast.makeText(SettingsActivity.this,"Working",Toast.LENGTH_LONG).show();
+
 
                                 } else{
                                     Toast.makeText(SettingsActivity.this,"Error in uploading.",Toast.LENGTH_LONG).show();
