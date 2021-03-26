@@ -22,11 +22,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ChatActivity extends AppCompatActivity {
@@ -35,6 +38,7 @@ public class ChatActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef; // to retrieve the other user id
     private FirebaseAuth mAuth; // to retrieve my user id
     private String mCurrentUserId;
+    private CircleImageView mDisplayImage;
 
     private Button mSendMessageBtn;
     private EditText mMessageText;
@@ -62,6 +66,22 @@ public class ChatActivity extends AppCompatActivity {
                 mToolbar = findViewById(R.id.chat_toolbar);
                 setSupportActionBar(mToolbar);
                 getSupportActionBar().setTitle(nameAsString);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        // initialize and get CircleImageView instance to display the other user's image
+        mDisplayImage = findViewById(R.id.chat_image_view);
+        mDatabaseRef.child("Users").child(mOtherUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String imagePath = snapshot.child("image").getValue().toString();
+                // show default image if there is not user image
+                if(!imagePath.equals("default")){
+                    Picasso.get().load(imagePath).into(mDisplayImage);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
