@@ -42,29 +42,30 @@
         android:id="@+id/setting_status_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="13dp"
+        android:paddingBottom="13dp"
         android:text="@string/change_status"
         android:translationX="128dp"
         android:translationY="560dp"
-    />
+        app:iconPadding="50dp" />
 
     <TextView
         android:id="@+id/settings_display_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/display_name"
-        android:translationX="160dp"
+        android:textColor="@android:color/black"
+        android:translationX="177dp"
         android:translationY="300dp"
-        tools:text="@string/display_name"
-        android:textColor="@android:color/black"/>
+        tools:text="@string/display_name" />
 
     <TextView
         android:id="@+id/settings_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/default_message"
-        android:translationX="120dp"
-        android:translationY="330dp"
         android:textColor="@android:color/black"
-        />
+        android:translationX="160dp"
+        android:translationY="330dp" />
 
 </RelativeLayout>
