@@ -105,19 +105,11 @@ public class SettingsActivity extends AppCompatActivity {
                 mName.setText(name);
                 mStatus.setText(status);
 
-
-
-
                 // show default image if there is not user image
                 if(!image.equals("default")){
 
                     Picasso.get().load(image).into(mDisplayImage);
                 }
-
-
-
-
-
 
             }
 
@@ -152,15 +144,10 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 Intent galleryIntent = new Intent();
                 galleryIntent.setType("image/*");
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(galleryIntent,"SELECT IMAGE"),GALLERY_PICK);
-
-
-
-
 
             }
         });
@@ -176,10 +163,8 @@ public class SettingsActivity extends AppCompatActivity {
 
                     Uri imageUri = data.getData();
 
-
                     CropImage.activity(imageUri)
                             .setAspectRatio(1,1).setMinCropWindowSize(300, 300).start(SettingsActivity.this);
-
 
                 }
 
@@ -233,14 +218,6 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 }
 
-
-
-
-
             }
-
-
-
-
 
 }

@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UsersActivity extends AppCompatActivity {
     private RecyclerView mUsersList;
     private DatabaseReference mUsersDatabase;
@@ -87,6 +89,9 @@ public class UsersActivity extends AppCompatActivity {
         public void setStatus(String status){
             TextView userStatusView = mView.findViewById(R.id.user_single_status);
             userStatusView.setText(status);
+        }
+        public void setImage(String image){
+            CircleImageView circleImageView = mView.findViewById(R.id.user_single_picture);
         }
     }
 }
