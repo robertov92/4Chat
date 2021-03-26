@@ -2,6 +2,7 @@ package team4.cs246;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,17 +18,27 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UsersActivity extends AppCompatActivity {
     private RecyclerView mUsersList;
     private DatabaseReference mUsersDatabase;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
+
+        // toolbar
+        mToolbar = (Toolbar)findViewById(R.id.users_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Tap a user to start chatting!");
+
+        // back button on toolbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mUsersList = findViewById(R.id.users_list);
         mUsersList.setHasFixedSize(true);
@@ -46,6 +57,7 @@ public class UsersActivity extends AppCompatActivity {
             protected void populateViewHolder(UsersViewHolder usersViewHolder, Users users, int i) {
                 usersViewHolder.setName(users.getName());
                 usersViewHolder.setStatus(users.getStatus());
+                usersViewHolder.setImage(users.getImage());
                 String list_user_id = getRef(i).getKey(); // getting ref to click on it
 
                 // send user to chat activity when a user is clicked
@@ -92,6 +104,10 @@ public class UsersActivity extends AppCompatActivity {
         }
         public void setImage(String image){
             CircleImageView circleImageView = mView.findViewById(R.id.user_single_picture);
+            // show default image if there is not user image
+            if(!image.equals("default")){
+                Picasso.get().load(image).into(circleImageView);
+            }
         }
     }
 }

@@ -24,6 +24,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatsFragment extends Fragment {
     private RecyclerView mConversationList;
@@ -118,8 +121,9 @@ public class ChatsFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         final String userName = snapshot.child("name").getValue().toString();
-                        // String userThumb = snapshot.child("thumb_image").getValue().toString();
+                        String userImage = snapshot.child("image").getValue().toString();
                         conversationViewHolder.setName(userName);
+                        conversationViewHolder.setImage(userImage);
                         conversationViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -154,18 +158,18 @@ public class ChatsFragment extends Fragment {
         public void setMessage(String message, boolean isSeen){
             TextView userStatusView = mView.findViewById(R.id.user_single_status);
             userStatusView.setText(message);
-
-            // is seen, bold text if the message has not been seen yet
-//            if (!isSeen){
-//                userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.BOLD);
-//            } else {
-//                userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.NORMAL);
-//            }
         }
 
         public void setName(String name){
             TextView userNameView = mView.findViewById(R.id.user_single_name);
             userNameView.setText(name);
+        }
+        public void setImage(String image){
+            CircleImageView circleImageView = mView.findViewById(R.id.user_single_picture);
+            // show default image if there is not user image
+            if(!image.equals("default")){
+                Picasso.get().load(image).into(circleImageView);
+            }
         }
     }
 }
