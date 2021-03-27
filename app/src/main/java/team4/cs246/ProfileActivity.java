@@ -84,7 +84,10 @@ public class ProfileActivity extends AppCompatActivity {
                 mProfileName.setText(display_name);
                 mProfileStatus.setText(status);
 
-                Picasso.get(ProfileActivity.this).load(image).placeholder(R.drawable.default_profile).into(mProfileImage);
+                //Picasso.get(ProfileActivity.this).load(image).placeholder(R.drawable.default_profile).into(mProfileImage);
+
+                Picasso.get().load(image).placeholder(R.drawable.default_profile).into(mProfileImage);
+
 
                 // -------------------- FRIENDS LIST / REQUEST FEATURE --------------------------
 

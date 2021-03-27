@@ -66,7 +66,7 @@ public class UsersActivity extends AppCompatActivity {
                 usersViewHolder.setUserImage(users.getThumb_image(), getApplicationContext());
 
 
-                String user_id = getRef(position).getKey();
+                String user_id = getRef(i).getKey();
 
                 usersViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -106,7 +106,9 @@ public class UsersActivity extends AppCompatActivity {
             CircleImageView userImageView = (CircleImageView) mView.findViewById(R.id.user_single_image);
 
 
-            Picasso.get(ctx).load(thumb_image).placeholder(R.drawable.default_profile).into(userImageView);
+            //Picasso.get(ctx).load(thumb_image).placeholder(R.drawable.default_profile).into(userImageView);
+
+            Picasso.get().load(thumb_image).into(userImageView);
 
         }
 

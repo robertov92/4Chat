@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //main_all_btn variable
-        if(item.getItemId() == R.id.main_all_btn){
+        if(item.getItemId() == R.id.main_users_btn){
             Intent settingsIntent  = new Intent(MainActivity.this, UsersActivity.class);
             startActivity(settingsIntent);
         }
