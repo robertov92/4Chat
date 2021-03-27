@@ -2,19 +2,18 @@ package team4.cs246;
 
 public class Users {
 
+    //These have to correspond to the names in my database, just like JSON
     public String name;
-    public String image;
     public String status;
-    public String thumb_image;
+    public String image;
 
     public Users() {
     }
 
-    public Users(String name, String image, String status) {
+    public Users(String name, String status, String image) {
         this.name = name;
-        this.image = image;
         this.status = status;
-        this.thumb_image = thumb_image;
+        this.image = image;
     }
 
     public String getName() {
@@ -25,14 +24,6 @@ public class Users {
         this.name = name;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -41,9 +32,12 @@ public class Users {
         this.status = status;
     }
 
-    public String getThumb_image() {return thumb_image;}
-
-    public void setThumb_image(String thumb_image) {
-        this.thumb_image = thumb_image;
+    public String getImage() {
+        return image;
     }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
 }

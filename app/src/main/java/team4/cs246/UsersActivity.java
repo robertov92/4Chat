@@ -1,5 +1,6 @@
 package team4.cs246;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +15,10 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -31,8 +36,21 @@ public class UsersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
 
+        // toolbar
+        mToolbar = (Toolbar)findViewById(R.id.users_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Tap a user to start chatting!");
+
+        // back button on toolbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mUsersList = findViewById(R.id.users_list);
+        mUsersList.setHasFixedSize(true);
+        mUsersList.setLayoutManager(new LinearLayoutManager(this));
+
+        mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
         //users-appBar is user-toolbar
-        mToolbar = (Toolbar) findViewById(R.id.user_toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.users_toolbar);
         setSupportActionBar(mToolbar);
 
         getSupportActionBar().setTitle("All Users");
@@ -63,7 +81,7 @@ public class UsersActivity extends AppCompatActivity {
 
                 usersViewHolder.setName(users.getName());
                 usersViewHolder.setUserStatus(users.getStatus());
-                usersViewHolder.setUserImage(users.getThumb_image(), getApplicationContext());
+                //usersViewHolder.setUserImage(users.getThumb_image(), getApplicationContext());
 
 
                 String user_id = getRef(i).getKey();
