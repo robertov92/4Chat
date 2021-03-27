@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
 
+        //use if-else instead to make it robust******
         if (item.getItemId() == R.id.main_logout_btn){
             FirebaseAuth.getInstance().signOut();
             sendToStart();
@@ -105,6 +106,19 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+        //SettingsActivity class must be created
+        if(item.getItemId() == R.id.main_settings_btn){
+            Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(settingsIntent);
+        }
+
+        //main_all_btn variable
+        if(item.getItemId() == R.id.main_all_btn){
+            Intent settingsIntent  = new Intent(MainActivity.this, UsersActivity.class);
+            startActivity(settingsIntent);
+        }
 
         return true;
     }
