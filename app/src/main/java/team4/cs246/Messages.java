@@ -1,7 +1,7 @@
 package team4.cs246;
 
 public class Messages {
-    private String message;
+    private String message, type;
     private long time;
     private String from;
 
@@ -17,12 +17,21 @@ public class Messages {
         this.from = from;
     }
 
-    public Messages(String message, long time) {
+    public Messages(String message, long time, String type) {
         this.message = message;
         this.time = time;
+        this.type = type;
     }
 
     public Messages() {
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getMessage() {

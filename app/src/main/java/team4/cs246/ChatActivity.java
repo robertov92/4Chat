@@ -60,7 +60,7 @@ public class ChatActivity extends AppCompatActivity {
     private LinearLayoutManager mLinearLayout;
     private MessageAdapter mAdapter;
 
-    // for adding image
+    // to bring up the one result, gallery
     private static final int GALLERY_PICK = 1;
 
     // storage Firebase (brett added for images)
@@ -91,7 +91,7 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         // used for image sending
-        mRootRef = FirebaseDatabase.getInstance().getReference();
+        //mRootRef = FirebaseDatabase.getInstance().getReference();
         // retrieve current user id and save it to a string
         mAuth = FirebaseAuth.getInstance();
         mCurrentUserId = mAuth.getCurrentUser().getUid();
@@ -103,7 +103,7 @@ public class ChatActivity extends AppCompatActivity {
 
         // image storage
         mImageStorage = FirebaseStorage.getInstance().getReference();
-        mRootRef.child("Chat").child(mCurrentUserId).child(mOtherUserId).child("seen").setValue(true);
+        //mRootRef.child("Chat").child(mCurrentUserId).child(mOtherUserId).child("seen").setValue(true);
 
         // retrieving messages
         mAdapter = new MessageAdapter(messagesList);
