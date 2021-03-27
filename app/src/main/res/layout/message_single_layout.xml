@@ -43,4 +43,22 @@
         android:textColor="#BFBFBF"
         app:layout_constraintStart_toEndOf="@+id/messages_text_name"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/message_image_layout"
+        android:layout_width="378dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/message_text_layout"
+        android:layout_alignStart="@+id/message_text_layout"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="1dp"
+        android:padding="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message_text_layout"
+        app:layout_constraintVertical_bias="0.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
