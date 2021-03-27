@@ -2,9 +2,10 @@ package team4.cs246;
 
 public class Users {
 
-    private String name;
-    private String image;
-    private String status;
+    public String name;
+    public String image;
+    public String status;
+    public String thumb_image;
 
     public Users() {
     }
@@ -13,6 +14,7 @@ public class Users {
         this.name = name;
         this.image = image;
         this.status = status;
+        this.thumb_image = thumb_image;
     }
 
     public String getName() {
@@ -37,5 +39,11 @@ public class Users {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getThumb_image() {return thumb_image;}
+
+    public void setThumb_image(String thumb_image) {
+        this.thumb_image = thumb_image;
     }
 }
