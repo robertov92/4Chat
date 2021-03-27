@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Creating main menu
-     *
      * @param menu a menu
      * @return bool
      */
@@ -91,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Main-menu options
-     *
      * @param item a menu
      * @return a bool
      */

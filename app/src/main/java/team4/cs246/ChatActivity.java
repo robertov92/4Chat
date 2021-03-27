@@ -31,12 +31,18 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
+/**
+ * This activity serves three main purposes:
+ * 1) Saves conversations into the RealtimeDatabase to be retrieved in the ChatsActivity
+ * 2) Saves messages into the Realtime Database
+ * 3) Retrieves messages to be displayed on the screen using instances of the Messages and MessageAdapter class
+ */
 public class ChatActivity extends AppCompatActivity {
+    // declare activity content
     private String mOtherUserId;
     private Toolbar mToolbar;
     private DatabaseReference mDatabaseRef; // to retrieve the other user id
-    private FirebaseAuth mAuth; // to retrieve my user id
+    private FirebaseAuth mAuth;             // to retrieve my user id
     private String mCurrentUserId;
     private CircleImageView mDisplayImage;
 
@@ -49,6 +55,10 @@ public class ChatActivity extends AppCompatActivity {
     private LinearLayoutManager mLinearLayout;
     private MessageAdapter mAdapter;
 
+    /**
+     * Initialize activity content. Set content view activity_chat.xml.
+     * @param savedInstanceState used to pass data between activities
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +83,7 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         // initialize and get CircleImageView instance to display the other user's image
+        // there might be a better way to do this, but this is just a solution
         mDisplayImage = findViewById(R.id.chat_image_view);
         mDatabaseRef.child("Users").child(mOtherUserId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -96,14 +107,18 @@ public class ChatActivity extends AppCompatActivity {
         mSendMessageBtn = findViewById(R.id.chat_send_msg_btn);
         mMessageText = findViewById(R.id.chat_message_text);
 
-        // creates Chats data structure in realtime database
+        // creates Chats data structures in realtime database for new conversations
+        // this data is used latter in the ChatsActivity view to retrieve existing conversations
         mDatabaseRef.child("Chat").child(mCurrentUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.hasChild(mOtherUserId)){
+
+                    // metadata "timestamp" for the conversations saved to a map
                     Map<String, Object> chatAddMap = new HashMap<>();
                     chatAddMap.put("timestamp", ServerValue.TIMESTAMP);
 
+                    // creates two data structures, one to save the conversation for the sender and one for the receiver
                     Map<String, Object> chatUserMap = new HashMap<>();
                     chatUserMap.put("Chat/" + mCurrentUserId + "/" + mOtherUserId, chatAddMap);
                     chatUserMap.put("Chat/" + mOtherUserId + "/" + mCurrentUserId, chatAddMap);
@@ -112,6 +127,7 @@ public class ChatActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                             if (error != null){
+                                // Shows a toast if there was an error writing into the database
                                 Toast.makeText(ChatActivity.this, "Something is wrong!", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -125,6 +141,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        // calls sendMessage each time the send button is clicked
         mSendMessageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,7 +159,10 @@ public class ChatActivity extends AppCompatActivity {
         loadMessages();
 
     }
-    // load messages
+
+    /**
+     * Load messages. This method is called every time data in the conversation changes.
+     */
     private void loadMessages() {
         mDatabaseRef.child("messages").child(mCurrentUserId).child(mOtherUserId).addChildEventListener(new ChildEventListener() {
             @Override
@@ -176,32 +196,43 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    // creates message data structure in realtime database
+    /**
+     * Creates message data structure in realtime database.
+     */
     private void sendMessage() {
+        // converts EditText content to a string
         String message = mMessageText.getText().toString();
+
+        // if the content of the message is not empty...
         if (!TextUtils.isEmpty(message)){
 
+            // creates Db path references for the sender and the receiver inside the "messages" data structure
             String current_user_ref = "messages/" + mCurrentUserId + "/" + mOtherUserId;
             String other_user_ref = "messages/" + mOtherUserId + "/" + mCurrentUserId;
 
+            // Creates a reference to an autogenerated child location to store the actual message
             DatabaseReference userMessagePush = mDatabaseRef.child("messages").child(mCurrentUserId).child(mOtherUserId).push();
+            // Saves the userMessagePush key to a String
             String pushId = userMessagePush.getKey();
 
+            // save message and metadata to a HashMap
             Map<String, Object> messageMap = new HashMap<>();
             messageMap.put("message", message);
             messageMap.put("time", ServerValue.TIMESTAMP);
             messageMap.put("from", mCurrentUserId); // adds who is sending the message to change color of background
 
+            // save the message in two locations into the database for the two users, the pushId and the message data
             Map<String, Object> messageUserMap = new HashMap<>();
             messageUserMap.put(current_user_ref + "/" + pushId, messageMap);
             messageUserMap.put(other_user_ref + "/" + pushId, messageMap);
 
-            mMessageText.setText(""); // sets the EditText blank
+            mMessageText.setText(""); // sets the EditText to blank
 
             mDatabaseRef.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                     if (error != null){
+                        // show an error toast if the data wasn't written in the database
                         Toast.makeText(ChatActivity.this, "Something is wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
