@@ -84,7 +84,7 @@ public class ChatActivity extends AppCompatActivity {
 
         // initialize and get CircleImageView instance to display the other user's image
         // there might be a better way to do this, but this is just a solution
-        mDisplayImage = findViewById(R.id.chat_image_view);
+        mDisplayImage = findViewById(R.id.chat_image_view2);
         mDatabaseRef.child("Users").child(mOtherUserId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
