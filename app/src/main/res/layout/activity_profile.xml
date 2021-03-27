@@ -25,6 +25,10 @@
         android:id="@+id/profile_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/profile_totalFriends"
+        android:layout_below="@+id/profile_displayName"
+        android:layout_marginTop="37dp"
+        android:layout_marginBottom="80dp"
         android:text="Current User Status"
         android:translationX="150dp"
         android:translationY="350dp" />
