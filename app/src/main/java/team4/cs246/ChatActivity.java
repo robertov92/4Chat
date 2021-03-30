@@ -162,6 +162,15 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        // retrieving messages
+        mAdapter = new MessageAdapter(messagesList);
+        mMessagesList = findViewById(R.id.messages_list);
+        mLinearLayout = new LinearLayoutManager(this);
+        mMessagesList.setHasFixedSize(true);
+        mMessagesList.setLayoutManager(mLinearLayout);
+        mMessagesList.setAdapter(mAdapter);
+        loadMessages();
+
         //------- SEND TEXT ---------
         // calls sendMessage each time the send button is clicked
         mSendMessageBtn.setOnClickListener(new View.OnClickListener() {
@@ -183,15 +192,6 @@ public class ChatActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), GALLERY_PICK);
             }
         });
-
-        // retrieving messages
-        mAdapter = new MessageAdapter(messagesList);
-        mMessagesList = findViewById(R.id.messages_list);
-        mLinearLayout = new LinearLayoutManager(this);
-        mMessagesList.setHasFixedSize(true);
-        mMessagesList.setLayoutManager(mLinearLayout);
-        mMessagesList.setAdapter(mAdapter);
-        loadMessages();
 
     }
 
@@ -282,6 +282,8 @@ public class ChatActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
+
         });
     }
 

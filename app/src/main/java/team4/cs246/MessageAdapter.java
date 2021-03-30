@@ -66,7 +66,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             holder.messageText.setText(c.getMessage());
             holder.messageImage.setVisibility(View.INVISIBLE);
         }
-        else if (message_type.equals("image")) {
+        else if (message_type.equals("image")){
             Picasso.get().load(c.getMessage()).into(holder.messageImage);
             holder.messageText.setVisibility(View.INVISIBLE);
         }

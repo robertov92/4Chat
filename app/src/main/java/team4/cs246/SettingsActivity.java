@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -100,7 +101,9 @@ public class SettingsActivity extends AppCompatActivity {
                 String name = snapshot.child("name").getValue().toString();
                 String image = snapshot.child("image").getValue().toString();
                 String status = snapshot.child("status").getValue().toString();
-                String thumb_image = snapshot.child("thumb_image").getValue().toString();
+
+                // we never use thumbnails, so that's why I commented this out ~Roberto
+                // String thumb_image = snapshot.child("thumb_image").getValue().toString();
 
                 mName.setText(name);
                 mStatus.setText(status);
@@ -189,29 +192,38 @@ public class SettingsActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
                                 if(task.isSuccessful()){
-                                    String download_url = resultUri.toString();
-
-                                    mUserDatabase.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    // this little monster downloads an uri image path and stores it into the images field of the User ~Roberto
+                                    // solution taken from https://stackoverflow.com/questions/54009384/task-getresult-getdownloadurl-method-not-working
+                                    final UploadTask uploadTask = filepath.putFile(resultUri);
+                                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                         @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                mProgressDialog.dismiss();
-                                                Toast.makeText(SettingsActivity.this,"Success uploading.",Toast.LENGTH_LONG).show();
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                            taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    String download_url = uri.toString();
+                                                    mUserDatabase.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if(task.isSuccessful()){
+                                                                mProgressDialog.dismiss();
+                                                                Toast.makeText(SettingsActivity.this,"Success uploading.",Toast.LENGTH_LONG).show();
 
-                                            }
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            });
                                         }
                                     });
-
 
                                 } else{
                                     Toast.makeText(SettingsActivity.this,"Error in uploading.",Toast.LENGTH_LONG).show();
                                     mProgressDialog.dismiss();
                                 }
 
-
                             }
                         });
-
 
                     } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                         Exception error = result.getError();
