@@ -81,10 +81,10 @@ public class UsersActivity extends AppCompatActivity {
 
                 usersViewHolder.setName(users.getName());
                 usersViewHolder.setUserStatus(users.getStatus());
-                usersViewHolder.setUserImage(users.getImage(), getApplicationContext());
+                //usersViewHolder.setUserImage(users.getThumb_image(), getApplicationContext());
 
 
-                final String user_id = getRef(i).getKey();
+                String user_id = getRef(i).getKey();
 
                 usersViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
