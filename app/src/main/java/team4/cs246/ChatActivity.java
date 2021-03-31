@@ -93,6 +93,7 @@ public class ChatActivity extends AppCompatActivity {
                 mToolbar = findViewById(R.id.chat_toolbar);
                 setSupportActionBar(mToolbar);
                 getSupportActionBar().setTitle(nameAsString);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

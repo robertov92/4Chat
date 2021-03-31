@@ -37,7 +37,7 @@ public class UsersActivity extends AppCompatActivity {
         // toolbar
         mToolbar = (Toolbar)findViewById(R.id.users_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Tap a user to start chatting!");
+        getSupportActionBar().setTitle("Tap to Start Chatting!");
 
         // back button on toolbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

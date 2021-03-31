@@ -5,7 +5,7 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lighter_blue"
+    android:background="@color/white"
     tools:context=".SettingsActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -25,7 +25,6 @@
         android:layout_width="184dp"
         android:layout_height="214dp"
         android:layout_marginTop="40dp"
-        android:background="@color/lighter_blue"
         android:src="@drawable/default_profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -36,48 +35,50 @@
         android:id="@+id/settings_image_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="444dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/change_image"
         android:textColor="@color/white"
         app:iconPadding="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/setting_status_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/setting_status_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="460dp"
+        android:layout_marginBottom="32dp"
         android:text="@string/change_status"
         app:iconPadding="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settings_toolbar" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/settings_display_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="304dp"
+        android:layout_marginTop="8dp"
         android:text="@string/display_name"
         android:textColor="@android:color/black"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_image"
         tools:text="@string/display_name" />
 
     <TextView
         android:id="@+id/settings_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="284dp"
+        android:layout_marginTop="8dp"
         android:text="@string/default_message"
         android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settings_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/settings_display_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

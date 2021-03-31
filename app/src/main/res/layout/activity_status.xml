@@ -5,7 +5,6 @@
     android:id="@+id/relativeLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:translationY="10dp"
     android:visibility="visible"
     tools:context=".StatusActivity"
     tools:visibility="visible">
@@ -14,39 +13,45 @@
         android:id="@+id/status_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="0dp"
         android:background="@color/main_blue"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/white_two" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/status_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:translationY="200dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/your_status" />
-    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/status_save_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="228dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
         android:text="@string/save_changes"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.889"
+        app:layout_constraintTop_toBottomOf="@+id/status_edit_text" />
+
+    <EditText
+        android:id="@+id/status_edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/status_input"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Change Your Status..."
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/status_toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
