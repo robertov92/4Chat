@@ -81,7 +81,7 @@ public class UsersActivity extends AppCompatActivity {
 
                 usersViewHolder.setName(users.getName());
                 usersViewHolder.setUserStatus(users.getStatus());
-                //usersViewHolder.setUserImage(users.getThumb_image(), getApplicationContext());
+                usersViewHolder.setUserImage(users.getImage(), getApplicationContext());
 
 
                 String user_id = getRef(i).getKey();

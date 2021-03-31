@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lighter_blue"
+    android:backgroundTint="#FFFFFF"
+    android:theme="@style/AlertDialog.AppCompat.Light"
     tools:context=".SettingsActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -21,51 +23,57 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/settings_image"
-        android:layout_width="184dp"
-        android:layout_height="214dp"
-        android:background="@color/lighter_blue"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp"
         android:src="@drawable/default_profile"
-        android:translationX="115dp"
         android:translationY="88dp" />
 
     <Button
         android:id="@+id/settings_image_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:text="@string/change_image"
-        android:textColor="@color/white"
-        android:translationX="133dp"
-        android:translationY="500dp" />
+        android:layout_above="@+id/setting_status_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:background="@color/main_blue"
+        android:backgroundTint="#FFFFFF"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Change photo" />
 
     <Button
         android:id="@+id/setting_status_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:paddingTop="13dp"
-        android:paddingBottom="13dp"
-        android:text="@string/change_status"
-        android:translationX="128dp"
-        android:translationY="560dp"
-        app:iconPadding="50dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Change status" />
 
     <TextView
         android:id="@+id/settings_display_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
         android:text="@string/display_name"
-        android:textColor="@android:color/black"
-        android:translationX="177dp"
-        android:translationY="300dp"
-        tools:text="@string/display_name" />
+        android:textColor="@color/black"
+        android:textSize="30dp" />
 
     <TextView
         android:id="@+id/settings_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/default_message"
-        android:textColor="@android:color/black"
-        android:translationX="160dp"
-        android:translationY="330dp" />
-
+        android:layout_below="@+id/settings_display_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/your_status"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
 </RelativeLayout>
