@@ -54,6 +54,7 @@ public class ProfileActivity extends AppCompatActivity {
        2 = Request recieved - Accept or Decline Friend request
        3 = Friends state - Unfriend
      */
+    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
