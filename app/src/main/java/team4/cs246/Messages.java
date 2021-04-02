@@ -1,5 +1,8 @@
 package team4.cs246;
 
+/**
+ * Helper class to retrieve Messages objects
+ */
 public class Messages {
     private String message, type;
     private long time;

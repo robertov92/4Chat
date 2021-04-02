@@ -18,7 +18,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-
+/**
+ * StatusActivity is called from SettingsActivity
+ * It is used to update the user's status
+ */
 public class StatusActivity extends AppCompatActivity {
     private Toolbar mToolbar;
 
@@ -29,8 +32,9 @@ public class StatusActivity extends AppCompatActivity {
     private DatabaseReference mStatusDatabase;
     private FirebaseUser mCurrentUser;
 
-    /*
-    Loads Edit Status Activity
+    /**
+     * Loads Edit Status Activity
+     * @param savedInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +45,6 @@ public class StatusActivity extends AppCompatActivity {
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         String current_uid = mCurrentUser.getUid();
         mStatusDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(current_uid);
-
-
 
         mToolbar = (Toolbar)findViewById(R.id.status_toolbar);
         setSupportActionBar(mToolbar);
@@ -56,9 +58,7 @@ public class StatusActivity extends AppCompatActivity {
 
         mStatus.setText(status_value);
 
-        /*
-        Functionality to Save button when clicked
-         */
+        // Functionality to Save button when clicked
         mSavebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,35 +68,18 @@ public class StatusActivity extends AppCompatActivity {
                 mStatusDatabase.child("status").setValue(status).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
                         if(task.isSuccessful()) {
-
-                            // Sends user back to SettingsActivity
+                            // Sends user back to SettingsActivity ~Roberto
                             Intent settingsIntent = new Intent(StatusActivity.this, SettingsActivity.class);
                             startActivity(settingsIntent);
-
                         } else {
-
                             Toast.makeText(getApplicationContext(),"There was some error in saving changes.",Toast.LENGTH_LONG).show();
-
-
                         }
 
-
                         }
-
-
-
                     }
                 );
-
-
-
-
-
-
             }
         });
-
     }
 }

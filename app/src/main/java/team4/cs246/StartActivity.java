@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * StartActivity gives to the user the options to login or sign-up
+ * The user is redirected to this activity from MainActivity if he is not logged-in
+ */
 public class StartActivity extends AppCompatActivity {
     private Button mRegBtn, mLoginBtn;
 

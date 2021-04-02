@@ -22,6 +22,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
+/**
+ * RegisterActivity is called from StartActivity and handles users registration
+ */
 public class RegisterActivity extends AppCompatActivity {
     private EditText mDisplayName, mEmail, mPassword;
     private Button mCreateBtn;
@@ -52,10 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
         mPassword = findViewById(R.id.reg_password);
         mCreateBtn = findViewById(R.id.reg_create_account_btn);
 
-
-        /**
-        * Register button functionality. This is called when the Register button is pressed
-        */
+        //Register button functionality. This is called when the Register button is pressed
         mCreateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +75,6 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     /**
@@ -103,7 +102,6 @@ public class RegisterActivity extends AppCompatActivity {
                     userMap.put("name",display_name);
                     userMap.put("status","Hi there! Im using 4Chat!");
                     userMap.put("image","default");
-                    userMap.put("thumb_image","default");
 
                     mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -116,7 +114,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 startActivity(mainIntent);
                                 finish();
-
 
                             }
 

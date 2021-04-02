@@ -17,19 +17,33 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Helper class used to format the Messages
+ * It contains a list of formatted messages
+ */
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
     private FirebaseAuth mAuth;
     private List<Messages> mMessageList;
     private DatabaseReference mDatabase;
 
-
+    /**
+     * Constructor. One object of this class is used in the ChatActivity
+     * @param mMessageList a list of Messages objects
+     */
     public MessageAdapter(List<Messages> mMessageList) {
         this.mMessageList = mMessageList;
     }
 
+    /**
+     * Creates every message using the message_single_layout
+     * @param parent a ViewGroup
+     * @param viewType an integer
+     * @return a new MessageViewHolder
+     */
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -37,14 +51,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         return new MessageViewHolder(v);
     }
 
+    /**
+     * Sets the name, time, and message for each message
+     * @param holder a MessageViewHolder
+     * @param position an integer
+     */
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-
         mAuth = FirebaseAuth.getInstance();
 
         Messages c = mMessageList.get(position);
         String message_type = c.getType();
 
+        // sets the user's name for each message
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("Users").child(c.getFrom()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -58,10 +77,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
             }
         });
+
+        // sets teh date and time for each message
         Date d = new Date(c.getTime());
         holder.mSentTime.setText(d.toString());
 
-
+        // sets the message according to it's type
         if (message_type.equals("text")) {
             holder.messageText.setText(c.getMessage());
             holder.messageImage.setVisibility(View.INVISIBLE);
@@ -72,18 +93,30 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         }
     }
 
+    /**
+     * Used in the ChatActivity to go to automatically show the last message at the bottom of the
+     * list of messages
+     * @return an integer
+     */
     @Override
     public int getItemCount() {
         return mMessageList.size();
     }
 
-
-    public class MessageViewHolder extends RecyclerView.ViewHolder{
+    /**
+     * Helper class used to initialize the items from the message_single_layout.xml
+     * Objects form this class are used above
+     */
+    public static class MessageViewHolder extends RecyclerView.ViewHolder{
         public TextView messageText;
         public TextView mSentByName;
         public TextView mSentTime;
         public ImageView messageImage;
 
+        /**
+         * Initialized the items from message_single_layout
+         * @param itemView takes a View
+         */
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
             messageText = itemView.findViewById(R.id.message_text_layout);

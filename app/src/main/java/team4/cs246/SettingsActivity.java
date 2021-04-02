@@ -35,17 +35,17 @@ import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * SettingActivity is called from MainActivity
+ * It gives the user the option to update his image or status
+ */
 public class SettingsActivity extends AppCompatActivity {
-
-
     private DatabaseReference mUserDatabase;
     private FirebaseUser mCurrentUser;
 
     private Toolbar mToolbar;
 
-
     //android layout
-
     private CircleImageView mDisplayImage;
     private TextView mName;
     private TextView mStatus;
@@ -62,14 +62,14 @@ public class SettingsActivity extends AppCompatActivity {
     //Progress bar
     private ProgressDialog mProgressDialog;
 
-    /*
-    Main activity for Settings page
+    /**
+     * Main activity for Settings page
+     * @param savedInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
 
         mDisplayImage = (CircleImageView)findViewById(R.id.settings_image);
         mName = (TextView) findViewById(R.id.settings_display_name);
@@ -85,16 +85,13 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Settings");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         String current_uid = mCurrentUser.getUid();
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(current_uid);
         mUserDatabase.keepSynced(true); // Offline capabilities
 
-        /*
-        Reads User's data from database
-         */
+
+        //Reads User's data from database
         mUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -110,10 +107,8 @@ public class SettingsActivity extends AppCompatActivity {
 
                 // show default image if there is not user image
                 if(!image.equals("default")){
-
                     Picasso.get().load(image).into(mDisplayImage);
                 }
-
             }
 
             @Override
@@ -121,9 +116,8 @@ public class SettingsActivity extends AppCompatActivity {
 
             }
         });
-        /*
-        Adds functionality to Status button
-         */
+
+        //Adds functionality to Status button
         mStatusBtn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
@@ -138,10 +132,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-
-        /*
-        Adds functionality to Image button
-         */
+        // Adds functionality to Image button
         mImageBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -155,81 +146,81 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
     }
-            /*
-            Retrieves image that user picks and crops it
-             */
-            @Override
-            protected void onActivityResult(int requestCode,int resultCode,Intent data){
-                SettingsActivity.super.onActivityResult(requestCode,resultCode,data);
 
-                if(requestCode==GALLERY_PICK && resultCode== RESULT_OK) {
+    /**
+     * Retrieves image that user picks and crops it
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode,int resultCode,Intent data){
+        SettingsActivity.super.onActivityResult(requestCode,resultCode,data);
 
-                    Uri imageUri = data.getData();
+        if(requestCode==GALLERY_PICK && resultCode== RESULT_OK) {
 
-                    CropImage.activity(imageUri)
-                            .setAspectRatio(1,1).setMinCropWindowSize(300, 300).start(SettingsActivity.this);
+            Uri imageUri = data.getData();
 
-                }
+            CropImage.activity(imageUri)
+                    .setAspectRatio(1,1).setMinCropWindowSize(300, 300).start(SettingsActivity.this);
 
-                if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-                    CropImage.ActivityResult result = CropImage.getActivityResult(data);
-                    if (resultCode == RESULT_OK) {
+        }
 
-                        mProgressDialog=new ProgressDialog(SettingsActivity.this);
-                        mProgressDialog.setTitle("Uploading image...");
-                        mProgressDialog.setMessage("Please wait while we upload and process the image.");
-                        mProgressDialog.setCanceledOnTouchOutside(false);
-                        mProgressDialog.show();
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
 
-                        Uri resultUri = result.getUri();
+                mProgressDialog=new ProgressDialog(SettingsActivity.this);
+                mProgressDialog.setTitle("Uploading image...");
+                mProgressDialog.setMessage("Please wait while we upload and process the image.");
+                mProgressDialog.setCanceledOnTouchOutside(false);
+                mProgressDialog.show();
 
-                        String current_user_id = mCurrentUser.getUid();
+                Uri resultUri = result.getUri();
 
-                        StorageReference filepath = mImageStorage.child("profile_images").child(current_user_id + ".jpg");
+                String current_user_id = mCurrentUser.getUid();
 
-                        filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                StorageReference filepath = mImageStorage.child("profile_images").child(current_user_id + ".jpg");
 
-                                if(task.isSuccessful()){
-                                    // this little monster downloads an uri image path and stores it into the images field of the User ~Roberto
-                                    // solution taken from https://stackoverflow.com/questions/54009384/task-getresult-getdownloadurl-method-not-working
-                                    final UploadTask uploadTask = filepath.putFile(resultUri);
-                                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+                        if(task.isSuccessful()){
+                            // this little monster downloads an uri image path and stores it into the images field of the User ~Roberto
+                            // solution taken from https://stackoverflow.com/questions/54009384/task-getresult-getdownloadurl-method-not-working
+                            final UploadTask uploadTask = filepath.putFile(resultUri);
+                            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override
-                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                            taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        public void onSuccess(Uri uri) {
+                                            String download_url = uri.toString();
+                                            mUserDatabase.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
-                                                public void onSuccess(Uri uri) {
-                                                    String download_url = uri.toString();
-                                                    mUserDatabase.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if(task.isSuccessful()){
-                                                                mProgressDialog.dismiss();
-                                                                Toast.makeText(SettingsActivity.this,"Success uploading.",Toast.LENGTH_LONG).show();
-
-                                                            }
-                                                        }
-                                                    });
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()){
+                                                        mProgressDialog.dismiss();
+                                                        Toast.makeText(SettingsActivity.this,"Success uploading.",Toast.LENGTH_LONG).show();
+                                                    }
                                                 }
                                             });
                                         }
                                     });
-
-                                } else{
-                                    Toast.makeText(SettingsActivity.this,"Error in uploading.",Toast.LENGTH_LONG).show();
-                                    mProgressDialog.dismiss();
                                 }
+                            });
 
-                            }
-                        });
-
-                    } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                        Exception error = result.getError();
+                        } else{
+                            Toast.makeText(SettingsActivity.this,"Error in uploading.",Toast.LENGTH_LONG).show();
+                            mProgressDialog.dismiss();
+                        }
                     }
-                }
+                });
 
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
             }
-
+        }
+    }
 }

@@ -24,11 +24,20 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * UsersActivity is invoked from MainActivity
+ * It displays a list, using a RecycleView, of all the existing app uses
+ * When a user from the list is tapped, a new conversation is created and the ChatActivity is invoked
+ */
 public class UsersActivity extends AppCompatActivity {
     private RecyclerView mUsersList;
     private DatabaseReference mUsersDatabase;
     private Toolbar mToolbar;
 
+    /**
+     * Overrides onCreate
+     * Initializes all the objects used in the Activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +48,7 @@ public class UsersActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Tap to Start Chatting!");
 
-        // back button on toolbar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // back button on toolbar
 
         mUsersList = findViewById(R.id.users_list);
         mUsersList.setHasFixedSize(true);
@@ -49,21 +57,31 @@ public class UsersActivity extends AppCompatActivity {
         mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
     }
 
+    /**
+     * Overrides onStart
+     * Populates RecyclerView
+     */
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseRecyclerAdapter<Users, UsersViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, UsersViewHolder>(
-                Users.class, R.layout.users_single_layout, UsersViewHolder.class, mUsersDatabase
+
+        // initiates FirebaseRecyclerAdapter to display users
+        // similar to what happens in MainActivity, this FirebaseRecyclerVie uses the static class
+        // UsersActivity.UsersViewHolder which is written at the bottom of this activity
+        FirebaseRecyclerAdapter<Users, UsersActivity.UsersViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, UsersViewHolder>(
+                Users.class, R.layout.users_single_layout, UsersActivity.UsersViewHolder.class, mUsersDatabase
         ) {
             @Override
-            protected void populateViewHolder(UsersViewHolder usersViewHolder, Users users, int i) {
+            protected void populateViewHolder(UsersActivity.UsersViewHolder usersViewHolder, Users users, int i) {
+                // sets each user's name, status, image and gets the a user's reference
                 usersViewHolder.setName(users.getName());
                 usersViewHolder.setStatus(users.getStatus());
                 usersViewHolder.setImage(users.getImage());
                 String list_user_id = getRef(i).getKey(); // getting ref to click on it
 
-                // send user to chat activity when a user is clicked
+                // listens for data changes on the database reference
                 mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                    // send user to chat activity when a user is tapped
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         usersViewHolder.mView.setOnClickListener(new View.OnClickListener() {
@@ -71,8 +89,8 @@ public class UsersActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 Intent chatIntent = new Intent(UsersActivity.this, ChatActivity.class);
                                 chatIntent.putExtra("user_id", list_user_id);
-
                                 startActivity(chatIntent);
+                                Toast.makeText(getApplicationContext(), "Let's Chat!", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                         });
@@ -86,11 +104,15 @@ public class UsersActivity extends AppCompatActivity {
                 });
             }
         };
+        // mUsersList is our RecyclerView, firebaseRecyclerAdapter is the adapter we just built
         mUsersList.setAdapter(firebaseRecyclerAdapter);
     }
 
+    /**
+     * Helper class used to initialize the items from the user_single_layout.xml
+     * Objects form this class are used in the FirebaseRecyclerAdapter above
+     */
     public static class UsersViewHolder extends RecyclerView.ViewHolder{
-
         View mView;
 
         public UsersViewHolder(@NonNull View itemView) {

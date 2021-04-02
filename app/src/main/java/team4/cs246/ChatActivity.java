@@ -41,6 +41,7 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
+ * ChatActivity can be invoked when the user taps a chat in MainActivity or when he taps a user in UsersActivity
  * This activity serves three main purposes:
  * 1) Saves conversations into the RealtimeDatabase to be retrieved in the ChatsActivity
  * 2) Saves messages into the Realtime Database
@@ -197,8 +198,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     /**
+     * Sending images!
      * Image upload from devices and store in database.
-     *
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

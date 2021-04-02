@@ -1,5 +1,8 @@
 package team4.cs246;
 
+/**
+ * Helper class to retrieve Users objects
+ */
 public class Users {
 
     //These have to correspond to the names in my database, just like JSON
