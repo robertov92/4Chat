@@ -24,4 +24,8 @@
     <string name="default_message">Hi! Im using 4Chat Chat App!</string>
     <string name="your_status">Your status</string>
     <string name="save_changes">Save Changes</string>
+    <string name="display_profile_name">Display Profile Name</string>
+    <string name="current_user_status">Current User Status</string>
+    <string name="send_friend_request">SEND FRIEND REQUEST</string>
+    <string name="decline_friend_request">DECLINE FRIEND REQUEST</string>
 </resources>

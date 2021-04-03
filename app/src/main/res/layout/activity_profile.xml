@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="false"
         android:layout_centerVertical="false"
         android:gravity="center|center_horizontal"
-        android:text="Display Profile Name"
+        android:text="@string/display_profile_name"
         android:textSize="25sp"
         android:translationX="95dp"
         android:translationY="280dp" />
@@ -33,7 +33,7 @@
         android:layout_below="@+id/profile_displayName"
         android:layout_marginTop="37dp"
         android:layout_marginBottom="80dp"
-        android:text="Current User Status"
+        android:text="@string/current_user_status"
         android:translationX="150dp"
         android:translationY="350dp" />
 
@@ -48,7 +48,7 @@
         android:id="@+id/profile_send_req_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SEND FRIEND REQUEST"
+        android:text="@string/send_friend_request"
         android:translationX="110dp"
         android:translationY="550dp" />
 
@@ -56,7 +56,7 @@
         android:id="@+id/profile_decline_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DECLINE FRIEND REQUEST"
+        android:text="@string/decline_friend_request"
         android:translationX="100dp"
         android:translationY="600dp" />
 </RelativeLayout>

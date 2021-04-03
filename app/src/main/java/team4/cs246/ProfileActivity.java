@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.Nullable;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -228,6 +230,29 @@ public class ProfileActivity extends AppCompatActivity {
                                     }
                                 }
                             }       );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 }
 
                 //-----------------------------Cancel Friend Request ---------------------------
@@ -263,10 +288,20 @@ public class ProfileActivity extends AppCompatActivity {
                             });
                 }
 
+
+
+
                 //----------------------------------- ACCEPT fRIEND REQUEST--------------------------
 
                 if(mCurrent_state==2){
                     final String current_date = DateFormat.getDateTimeInstance().format(new Date());
+
+                    Map friendsMap = new HashMap();
+                    friendsMap.put("Friends/" + mCurrentUser.getUid() + "/" + user_id + "/date", current_date);
+                    friendsMap.put("Friends/" + user_id + "/" + mCurrentUser.getUid() + "/date", current_date);
+
+                    friendsMap.put("Friend_req/" + mCurrentUser.getUid() + "/" + user_id, null);
+                    friendsMap.put("Friend_req/" + user_id + "/" + mCurrentUser.getUid(), null);
 
                     mFriendsdb.child(mCurrentUser.getUid()).child(user_id).child("Friends Since").setValue(current_date)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -352,5 +387,12 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+
+
+
+
     }
 }
